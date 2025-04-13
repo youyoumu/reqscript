@@ -7,7 +7,7 @@ import ora from "ora";
 import wretch from "wretch";
 import { colorize } from "json-colorizer";
 
-import type { ConfiguredMiddleware } from "wretch";
+import type { ConfiguredMiddleware, WretchResponseChain } from "wretch";
 
 import { CurlGenerator } from "curl-generator";
 import { WretchError } from "wretch/resolver";
@@ -83,26 +83,28 @@ program
       }
 
       try {
-        const response = await requestModule.default(
-          wretch().options({ context }).middlewares([curlMiddleware]),
-        );
+        const response: WretchResponseChain<unknown> =
+          await requestModule.default(
+            wretch().options({ context }).middlewares([curlMiddleware]),
+          );
+
+        await response.json((data) => {
+          spinner.succeed(chalk.green("Request completed successfully\n"));
+
+          if (typeof data === "object") {
+            console.log(colorize(data));
+          } else {
+            console.log(data);
+          }
+        });
 
         printVerbose();
-
-        spinner.succeed(chalk.green("Request completed successfully"));
-        console.log("\n" + chalk.blue("Response:"));
-
-        if (typeof response === "object") {
-          console.log(colorize(response));
-        } else {
-          console.log(response);
-        }
       } catch (error) {
         printVerbose();
-        spinner.fail(chalk.red("Request failed"));
+        spinner.fail(chalk.red("Request failed\n"));
 
         if (error instanceof WretchError) {
-          console.error(chalk.yellow("\nResponse:"));
+          console.error("\n");
           console.error(error.text);
 
           process.exit(1);
