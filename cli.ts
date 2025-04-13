@@ -104,9 +104,9 @@ program
         spinner.fail(chalk.red("Request failed\n"));
 
         if (error instanceof WretchError) {
-          console.error("\n");
-          console.error(error.text);
-
+          if (error.text) {
+            console.error(colorize(JSON.parse(error.text)));
+          }
           process.exit(1);
         }
 
