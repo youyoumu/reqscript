@@ -26,4 +26,6 @@ if [ ! -d "$REQUESTS_DIR" ]; then
 fi
 
 # Find all TypeScript files and pipe to fzf with preview
-find "$REQUESTS_DIR" -type f -name "*.ts" | fzf --height 40% --layout=reverse --border --preview "$PREVIEW_CMD"
+FILE="$(find "$REQUESTS_DIR" -type f -name "*.ts" | fzf --height 40% --layout=reverse --border --preview "$PREVIEW_CMD")"
+
+./reqscript $FILE
