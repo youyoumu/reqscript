@@ -5,9 +5,12 @@ import { Command } from "commander";
 import chalk from "chalk";
 import ora from "ora";
 import wretch from "wretch";
+import { colorize } from "json-colorizer";
 
 import type { ConfiguredMiddleware } from "wretch";
+
 import { CurlGenerator } from "curl-generator";
+import { WretchError } from "wretch/resolver";
 
 const curlMiddleware: ConfiguredMiddleware = (next) => (url, options) => {
   const curlCommand = CurlGenerator({
@@ -83,28 +86,29 @@ program
         const response = await requestModule.default(
           wretch().options({ context }).middlewares([curlMiddleware]),
         );
-        spinner.succeed(chalk.green("Request completed successfully"));
 
-        // Display the response
+        printVerbose();
+
+        spinner.succeed(chalk.green("Request completed successfully"));
         console.log("\n" + chalk.blue("Response:"));
 
         if (typeof response === "object") {
-          console.log(JSON.stringify(response, null, 2));
+          console.log(colorize(response));
         } else {
           console.log(response);
         }
-
+      } catch (error) {
         printVerbose();
-      } catch (error: any) {
         spinner.fail(chalk.red("Request failed"));
-        console.error("\n" + chalk.red("Error:"), error.message);
 
-        if (error.response) {
+        if (error instanceof WretchError) {
           console.error(chalk.yellow("\nResponse:"));
-          console.error(error.response);
+          console.error(error.text);
+
+          process.exit(1);
         }
 
-        printVerbose();
+        console.error("\n" + chalk.red("Error:"), error.message);
 
         process.exit(1);
       }
