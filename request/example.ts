@@ -1,3 +1,3 @@
-export default async function (w: WretchBuilder) {
-  return await w("https://animechan.io/api/v1/quotes/random").get().json();
+export default async function (w: Wretch) {
+  return await w.get("https://nekos.best/api/v2/neko2").json();
 }

@@ -1,1 +1,1 @@
-declare type WretchBuilder = typeof import("wretch").default;
+declare type Wretch = ReturnType<typeof import("wretch").default>;

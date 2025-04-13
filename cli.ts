@@ -80,9 +80,9 @@ program
       }
 
       try {
-        const response = await requestModule.default((url: string) => {
-          return wretch(url).options({ context }).middlewares([curlMiddleware]);
-        });
+        const response = await requestModule.default(
+          wretch().options({ context }).middlewares([curlMiddleware]),
+        );
         spinner.succeed(chalk.green("Request completed successfully"));
 
         // Display the response
