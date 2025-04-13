@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-npx tsx cli.ts "$@"
+node --disable-warning=ExperimentalWarning cli.ts "$@"
