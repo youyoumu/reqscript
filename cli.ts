@@ -74,22 +74,21 @@ program
         curlCommand: "",
       };
 
-      function printVerbose() {
-        if (options.verbose) {
-          console.log("\n" + chalk.yellow("Request Details:"));
-          console.log(`File: ${chalk.green(filePath)}`);
-          console.log(`Curl Command: '${chalk.green(context.curlCommand)}'`);
-        }
-      }
-
       try {
         const response: WretchResponseChain<unknown> =
           await requestModule.default(
             wretch().options({ context }).middlewares([curlMiddleware]),
           );
 
+        if (options.verbose) {
+          console.log("\n" + chalk.yellow("Request Details:"));
+          console.log(`File: ${chalk.green(filePath)}`);
+          console.log(`Curl Command: '${chalk.green(context.curlCommand)}'`);
+          console.log();
+        }
+
         await response.json((data) => {
-          spinner.succeed(chalk.green("Request completed successfully\n"));
+          spinner.succeed(chalk.green("Request completed successfully"));
 
           if (typeof data === "object") {
             console.log(colorize(data));
@@ -98,14 +97,23 @@ program
           }
         });
 
-        printVerbose();
+        if (options.verbose) {
+          await response.res((response) => {
+            console.log(chalk.yellow("\nResponse Details:"));
+            console.log(response);
+          });
+        }
       } catch (error) {
-        printVerbose();
-        spinner.fail(chalk.red("Request failed\n"));
-
         if (error instanceof WretchError) {
+          spinner.fail(chalk.red("Request failed"));
           if (error.text) {
             console.error(colorize(JSON.parse(error.text)));
+          }
+
+          if (options.verbose) {
+            console.error(chalk.yellow("\nResponse Details:"));
+            console.log(error.response);
+            console.log();
           }
           process.exit(1);
         }
