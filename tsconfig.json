@@ -114,5 +114,5 @@
       "#utils/*": ["./utils/*"]
     }
   },
-  "include": ["./reqscript.ts", "request", "utils"]
+  "include": ["./reqscript.ts", "request", "utils", "cli.ts"]
 }
