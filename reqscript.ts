@@ -132,7 +132,9 @@ program
           process.exit(1);
         }
 
-        console.error("\n" + chalk.red("Error:"), error.message);
+        if (error instanceof Error) {
+          console.error("\n" + chalk.red("Error:"), error.message);
+        }
 
         process.exit(1);
       }
