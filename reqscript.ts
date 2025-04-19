@@ -25,7 +25,7 @@ const curlMiddleware: ConfiguredMiddleware = (next) => (url, options) => {
     method: options.method || "GET",
     //@ts-expect-error might be array
     headers: options.headers,
-    body: options.body ? JSON.stringify(options.body) : undefined,
+    body: (options.body as string) ?? undefined,
   });
 
   if (options.context) {
@@ -97,7 +97,7 @@ program
         if (options.verbose) {
           console.log("\n" + chalk.yellow("Request Details:"));
           console.log(`File: ${chalk.green(filePath)}`);
-          console.log(`Curl Command: '${chalk.green(context.curlCommand)}'`);
+          console.log(`Curl Command:\n${chalk.green(context.curlCommand)}`);
           console.log();
         }
 
