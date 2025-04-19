@@ -1,7 +1,7 @@
 node_modules
 pnpm-lock.yaml
 .env
-request
-!request/example.ts
-!utils/env.example.ts
-utils
+src/request
+!src/request/example.ts
+src/utils
+!src/utils/env.example.ts

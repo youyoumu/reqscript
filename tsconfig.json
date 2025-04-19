@@ -109,10 +109,11 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "rootDir": "./src",
     "paths": {
-      "#reqscript": ["./reqscript.ts"],
-      "#utils/*": ["./utils/*"]
+      "#reqscript": ["src/lib/reqscript.ts"],
+      "#utils/*": ["src/utils/*"]
     }
   },
-  "include": ["./reqscript.ts", "request", "utils", "cli.ts"]
+  "include": ["src"]
 }
