@@ -17,6 +17,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "imports": {
+    "#reqscript": "./reqscript.ts"
+  },
   "dependencies": {
     "chalk": "^5.4.1",
     "commander": "^13.1.0",

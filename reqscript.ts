@@ -6,11 +6,17 @@ import chalk from "chalk";
 import ora from "ora";
 import wretch from "wretch";
 import { colorize } from "json-colorizer";
-
-import type { ConfiguredMiddleware, WretchResponseChain } from "wretch";
-
+import type { ConfiguredMiddleware, Wretch, WretchResponseChain } from "wretch";
 import { CurlGenerator } from "curl-generator";
 import { WretchError } from "wretch/resolver";
+
+type Req<T = unknown> = (w: Wretch) => WretchResponseChain<T>;
+
+export function createRequest(req: Req) {
+  return {
+    req,
+  };
+}
 
 const curlMiddleware: ConfiguredMiddleware = (next) => (url, options) => {
   const curlCommand = CurlGenerator({
@@ -57,14 +63,23 @@ program
 
       const requestModule = await import(`file://${filePath}`);
 
-      if (
-        !requestModule.default ||
-        typeof requestModule.default !== "function"
-      ) {
+      if (!requestModule.Request) {
         spinner.fail();
         console.error(
           chalk.red(
-            `Error: ${filePath} should export a function as default export`,
+            `Error: ${filePath} should export a variable named 'Request'`,
+          ),
+        );
+        process.exit(1);
+      }
+
+      const req = requestModule.Request.req as Req;
+
+      if (!req) {
+        spinner.fail();
+        console.error(
+          chalk.red(
+            `Error: Request should be the return value of createRequest from '#reqscript'`,
           ),
         );
         process.exit(1);
@@ -75,10 +90,9 @@ program
       };
 
       try {
-        const response: WretchResponseChain<unknown> =
-          await requestModule.default(
-            wretch().options({ context }).middlewares([curlMiddleware]),
-          );
+        const response = req(
+          wretch().options({ context }).middlewares([curlMiddleware]),
+        );
 
         if (options.verbose) {
           console.log("\n" + chalk.yellow("Request Details:"));

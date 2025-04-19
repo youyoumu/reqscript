@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-node --disable-warning=ExperimentalWarning cli.ts "$@"
+node --disable-warning=ExperimentalWarning reqscript.ts "$@"
