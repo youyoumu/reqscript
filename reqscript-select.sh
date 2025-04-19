@@ -18,7 +18,7 @@ if command -v bat >/dev/null 2>&1; then
 fi
 
 # Find all TypeScript files in the requests directory
-REQUESTS_DIR="./request"
+REQUESTS_DIR="./src/request"
 
 if [ ! -d "$REQUESTS_DIR" ]; then
   echo "Error: 'request' directory not found in $(pwd)"

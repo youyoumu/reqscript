@@ -18,8 +18,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "imports": {
-    "#reqscript": "./reqscript.ts",
-    "#utils/*": "./utils/*"
+    "#reqscript": "./src/lib/reqscript.ts",
+    "#utils/*": "./src/utils/*"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.12.0",

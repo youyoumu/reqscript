@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-node --disable-warning=ExperimentalWarning --env-file ./.env cli.ts "$@"
+node --disable-warning=ExperimentalWarning --env-file ./.env ./src/lib/cli.ts "$@"
