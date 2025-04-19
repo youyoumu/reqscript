@@ -1,2 +1,7 @@
 node_modules
 pnpm-lock.yaml
+.env
+request
+!request/example.ts
+!utils/env.example.ts
+utils
