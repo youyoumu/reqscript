@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-node --disable-warning=ExperimentalWarning ./src/lib/cli.ts "$@"
