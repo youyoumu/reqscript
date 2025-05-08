@@ -14,28 +14,31 @@
   "author": "youyoumu",
   "type": "module",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "knip": "knip"
+  },
+  "exports": {
+    ".": "./src/lib/reqscript.ts"
+  },
   "imports": {
     "#reqscript": "./src/lib/reqscript.ts",
     "#utils/*": "./src/utils/*"
   },
   "dependencies": {
-    "@t3-oss/env-core": "^0.12.0",
     "chalk": "^5.4.1",
-    "commander": "^13.1.0",
     "curl-generator": "^0.4.2",
     "dotenv": "^16.5.0",
     "json-colorizer": "^3.0.1",
     "ora": "^8.2.0",
-    "typescript": "^5.8.3",
-    "valibot": "^1.0.0",
     "wretch": "^2.11.0"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
     "@eslint/js": "^9.25.0",
+    "@types/node": "^22.14.1",
+    "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.1",
-    "typescript-eslint": "^8.31.0",
-    "eslint": "^9.25.0"
+    "knip": "^5.55.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.0"
   }
 }
