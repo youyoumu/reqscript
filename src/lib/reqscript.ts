@@ -11,7 +11,8 @@ type Req<T = unknown> = (w: Wretch) => WretchResponseChain<T>;
 
 const verbose = process.env.REQSCRIPT_VERBOSE === "true";
 
-export async function createRequest(req: Req) {
+export async function createRequest(req: Req): Promise<unknown> {
+  let result;
   const context = {
     curlCommand: "",
   };
@@ -29,22 +30,24 @@ export async function createRequest(req: Req) {
       console.log();
     }
 
-    await response.json((data) => {
+    await response.res(async (res) => {
       spinner.succeed(chalk.green("Request completed successfully"));
+      const data = await res.text();
+      result = data;
 
-      if (typeof data === "object") {
-        console.log(colorize(data));
-      } else {
+      try {
+        const parsedJson = JSON.parse(data);
+        result = parsedJson;
+        console.log(colorize(parsedJson));
+      } catch {
         console.log(data);
       }
-    });
 
-    if (verbose) {
-      await response.res((response) => {
+      if (verbose) {
         console.log(chalk.yellow("\nResponse Details:"));
-        console.log(response);
-      });
-    }
+        console.log(res);
+      }
+    });
   } catch (error) {
     if (error instanceof WretchError) {
       spinner.fail(chalk.red("Request failed"));
@@ -63,6 +66,9 @@ export async function createRequest(req: Req) {
       console.error("\n" + chalk.red("Error:"), error.message);
     }
   }
+
+  spinner.stop();
+  return result;
 }
 
 const curlMiddleware: ConfiguredMiddleware = (next) => (url, options) => {
