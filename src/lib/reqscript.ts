@@ -9,6 +9,7 @@ import { colorize } from "json-colorizer";
 import type { ConfiguredMiddleware, Wretch, WretchResponseChain } from "wretch";
 import { CurlGenerator } from "curl-generator";
 import { WretchError } from "wretch/resolver";
+import "dotenv/config";
 
 type Req<T = unknown> = (w: Wretch) => WretchResponseChain<T>;
 
