@@ -9,7 +9,7 @@ import "dotenv/config";
 
 type Req<T = unknown> = (w: Wretch) => WretchResponseChain<T>;
 
-const verbose = process.env.REQSCRIPT_VERBOSE === "true";
+const verbose = process.argv.includes("--verbose");
 
 export async function createRequest(req: Req): Promise<unknown> {
   let result;
