@@ -20,17 +20,17 @@ export async function createRequest(req: Req): Promise<unknown> {
   const spinner = ora("Running request...").start();
 
   try {
-    const response = req(
+    const responseChain = req(
       wretch().options({ context }).middlewares([curlMiddleware]),
     );
 
     if (verbose) {
       console.log("\n" + chalk.yellow("Request Details:"));
-      console.log(`Curl Command:\n${chalk.green(context.curlCommand)}`);
+      console.log(`Curl Command:\n${chalk.blue(context.curlCommand)}`);
       console.log();
     }
 
-    await response.res(async (res) => {
+    await responseChain.res(async (res) => {
       spinner.succeed(chalk.green("Request completed successfully"));
       const data = await res.text();
       result = data;
