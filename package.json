@@ -1,6 +1,6 @@
 {
   "name": "reqscript",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "",
   "homepage": "https://github.com/youyoumu/reqscript#readme",
   "bugs": {
@@ -15,6 +15,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {},
+  "bin": {
+    "reqscript": "./src/bin/reqscript"
+  },
   "imports": {
     "#reqscript": "./src/lib/reqscript.ts",
     "#utils/*": "./src/utils/*"
