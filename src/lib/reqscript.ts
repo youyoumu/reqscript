@@ -13,7 +13,7 @@ import "dotenv/config";
 
 type Req<T = unknown> = (w: Wretch) => WretchResponseChain<T>;
 
-export function createRequest(req: Req) {
+export function createRequest(req: Req): { req: Req } {
   return {
     req,
   };
@@ -36,7 +36,7 @@ const curlMiddleware: ConfiguredMiddleware = (next) => (url, options) => {
   return next(url, options);
 };
 
-const program = new Command();
+const program: Command = new Command();
 
 program
   .name("reqscript")
