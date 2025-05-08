@@ -49,8 +49,8 @@ export async function createRequest(req: Req): Promise<unknown> {
       }
     });
   } catch (error) {
+    spinner.fail(chalk.red("Request failed"));
     if (error instanceof WretchError) {
-      spinner.fail(chalk.red("Request failed"));
       if (error.text) {
         console.error(colorize(JSON.parse(error.text)));
       }
@@ -60,10 +60,8 @@ export async function createRequest(req: Req): Promise<unknown> {
         console.log(error.response);
         console.log();
       }
-    }
-
-    if (error instanceof Error) {
-      console.error("\n" + chalk.red("Error:"), error.message);
+    } else if (error instanceof Error) {
+      console.error("\n" + chalk.red("Error:"), error);
     }
   }
 
