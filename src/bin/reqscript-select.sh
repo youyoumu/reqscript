@@ -3,6 +3,7 @@
 # reqscript-select
 # Script to select a request file using fzf with bat preview
 
+# Exit on error
 set -e
 
 # Check if fzf is installed
@@ -17,11 +18,11 @@ if command -v bat >/dev/null 2>&1; then
   PREVIEW_CMD="bat --color=always --style=numbers {}"
 fi
 
-# Find all TypeScript files in the requests directory
-REQUESTS_DIR="./src/request"
+# Check if a directory argument is provided, else use default
+REQUESTS_DIR="${1:-./}"
 
 if [ ! -d "$REQUESTS_DIR" ]; then
-  echo "Error: 'request' directory not found in $(pwd)"
+  echo "Error: '$REQUESTS_DIR' directory not found."
   exit 1
 fi
 
