@@ -52,7 +52,11 @@ export async function createRequest(req: Req): Promise<unknown> {
     spinner.fail(chalk.red("Request failed"));
     if (error instanceof WretchError) {
       if (error.text) {
-        console.error(colorize(JSON.parse(error.text)));
+        try {
+          console.error(colorize(JSON.parse(error.text)));
+        } catch {
+          console.error(error.text);
+        }
       }
 
       if (verbose) {

@@ -1,6 +1,6 @@
 {
   "name": "reqscript",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "A JavaScript library that simplifies making HTTP requests with Wretch",
   "homepage": "https://github.com/youyoumu/reqscript#readme",
   "bugs": {
