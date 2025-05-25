@@ -24,13 +24,15 @@
   },
   "imports": {
     "#reqscript": "./src/lib/reqscript.ts",
-    "#utils/*": "./src/utils/*"
+    "#utils/*": "./src/utils/*",
+    "#/*": "./src/*"
   },
   "dependencies": {
     "chalk": "^5.4.1",
     "curl-generator": "^0.4.2",
     "dotenv": "^16.5.0",
     "json-colorizer": "^3.0.1",
+    "openapi-fetch": "^0.14.0",
     "ora": "^8.2.0",
     "wretch": "^2.11.0"
   },

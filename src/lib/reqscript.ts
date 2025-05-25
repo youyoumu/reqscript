@@ -7,7 +7,35 @@ import { CurlGenerator } from "curl-generator";
 import { WretchError } from "wretch/resolver";
 import "dotenv/config";
 
-type Req<T = unknown> = (w: Wretch) => WretchResponseChain<T>;
+export type ReqscriptMetadata = {
+  __reqscriptMetadata: true;
+  method:
+    | "GET"
+    | "POST"
+    | "PUT"
+    | "DELETE"
+    | "PATCH"
+    | "OPTIONS"
+    | "HEAD"
+    | "CONNECT"
+    | "TRACE"
+    | (string & {});
+  url: string;
+  headers?: Record<string, string>;
+  body?: string | null;
+};
+
+type Req<T = unknown> = (w: Wretch) =>
+  | (WretchResponseChain<T> & {
+      __reqscriptMetadata?: false;
+    })
+  | ReqscriptMetadata
+  | Promise<
+      WretchResponseChain<T> & {
+        __reqscriptMetadata?: false;
+      }
+    >
+  | Promise<ReqscriptMetadata>;
 
 const verbose = process.argv.includes("--verbose");
 
@@ -18,11 +46,19 @@ export async function createRequest(req: Req): Promise<unknown> {
   };
 
   const spinner = ora("Running request...").start();
+  const w = wretch().options({ context }).middlewares([curlMiddleware]);
 
   try {
-    const responseChain = req(
-      wretch().options({ context }).middlewares([curlMiddleware]),
-    );
+    const returnedValue = await req(w);
+
+    let responseChain: WretchResponseChain<unknown>;
+    if (returnedValue.__reqscriptMetadata) {
+      responseChain = w
+        .headers(returnedValue.headers ?? {})
+        .fetch(returnedValue.method, returnedValue.url, returnedValue.body);
+    } else {
+      responseChain = returnedValue;
+    }
 
     if (verbose) {
       console.log("\n" + chalk.yellow("Request Details:"));
