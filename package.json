@@ -1,6 +1,6 @@
 {
   "name": "reqscript",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A JavaScript library that simplifies making HTTP requests with Wretch",
   "homepage": "https://github.com/youyoumu/reqscript#readme",
   "bugs": {
@@ -20,7 +20,9 @@
     "lint:fix": "eslint . --fix"
   },
   "exports": {
-    ".": "./src/lib/reqscript.ts"
+    ".": "./src/lib/reqscript.ts",
+    "./middleware": "./src/lib/middleware/index.ts",
+    "./adapter": "./src/lib/adapter/index.ts"
   },
   "imports": {
     "#reqscript": "./src/lib/reqscript.ts",
